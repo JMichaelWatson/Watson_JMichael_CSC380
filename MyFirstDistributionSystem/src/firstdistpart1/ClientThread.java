@@ -27,9 +27,11 @@ public class ClientThread extends Thread {
             String userInput = reader.readLine();
             String[] splitString = userInput.split(",");
             if(splitString[0].equalsIgnoreCase("1")){
+                System.out.println("Client is adding");
                 writer.println(mathLogic.add(Integer.parseInt(splitString[1]), Integer.parseInt(splitString[2])));
             }
             else{
+                System.out.println("Client is subbing");
                 System.out.println(mathLogic.sub(Integer.parseInt(splitString[1]), Integer.parseInt(splitString[2])));
             }
         }
