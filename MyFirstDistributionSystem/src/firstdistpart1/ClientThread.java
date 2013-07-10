@@ -32,7 +32,7 @@ public class ClientThread extends Thread {
             }
             else{
                 System.out.println("Client is subbing" + splitString[1] + " and " + splitString[2]);
-                System.out.println(mathLogic.sub(Integer.parseInt(splitString[1]), Integer.parseInt(splitString[2])));
+                writer.println(mathLogic.sub(Integer.parseInt(splitString[1]), Integer.parseInt(splitString[2])));
             }
         }
         catch (Exception e){
