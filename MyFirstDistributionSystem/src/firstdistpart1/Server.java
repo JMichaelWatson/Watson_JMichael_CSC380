@@ -30,6 +30,13 @@ public class Server{
                 ClientThread thread = new ClientThread(clientSocket);
                 thread.run();
             }
+        }
+        catch(Exception e){
+          System.out.println("Error on port 10080");
+          System.exit(-1);
+        }
+    }
+}
 //            writer = new PrintWriter(clientSocket.getOutputStream(), true);
 //            System.out.println("Creating Server Writer");
 //            reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -43,11 +50,3 @@ public class Server{
 //            else{
 //                System.out.println(mathLogic.sub(Integer.parseInt(splitString[1]), Integer.parseInt(splitString[2])));
 //            }
-
-        }
-        catch(Exception e){
-          System.out.println("Error on port 10080");
-          System.exit(-1);
-        }
-    }
-}

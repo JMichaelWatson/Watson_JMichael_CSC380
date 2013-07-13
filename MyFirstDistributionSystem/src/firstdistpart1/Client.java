@@ -25,16 +25,17 @@ public class Client {
         try{
             server = new Socket("LocalHost",10080);
             writer = new PrintWriter(server.getOutputStream(), true);
-            System.out.println("Enter in '1' for add and '2' for sub:");
-            String userInput = scan.next() + ",";
-            System.out.println("Enter in the first number:");
-            userInput += scan.next() + ",";
-            System.out.println("Enter in the second number:");
-            userInput += scan.next();
-            writer.println(userInput);
             reader = new BufferedReader(new InputStreamReader(server.getInputStream()));
-            System.out.println("The answer is:");
-            System.out.println(reader.readLine());
+            Thread.sleep(1000);
+            while (reader.ready()){
+                System.out.println(reader.readLine());
+            }
+            System.out.println("What method do you want?(Type the method name as it appears above)");
+            String input = scan.nextLine();
+            writer.println(input);
+            //System.out.println(reader.readLine());
+
+
             server.close();
         }
         catch (Exception e){
@@ -42,3 +43,12 @@ public class Client {
         }
     }
 }
+//System.out.println("Enter in '1' for add and '2' for sub:");
+//String userInput = scan.next() + ",";
+//System.out.println("Enter in the first number:");
+//userInput += scan.next() + ",";
+//System.out.println("Enter in the second number:");
+//userInput += scan.next();
+//writer.println(userInput);
+//System.out.println("The answer is:");
+//System.out.println(reader.readLine());
