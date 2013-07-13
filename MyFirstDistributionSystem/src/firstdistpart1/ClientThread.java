@@ -53,17 +53,35 @@ public class ClientThread extends Thread {
             reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             ref = Class.forName("firstdistpart1.MathLogic");
             for(Method s1 : ref.getDeclaredMethods()){
-                System.out.println(s1.getName());
-                writer.println(s1.getName());
+                String method = s1.getName() + ": ";
+                for(Class<?> p1 : s1.getParameterTypes()){
+                   method += p1 + " ";
+                }
+                System.out.println(method);
+                writer.println(method);
             }
-
-            while(reader.ready()){
                 String inputMehtod = reader.readLine();
                 System.out.println(inputMehtod);
+            Method[] methods = ref.getDeclaredMethods();
+
+            String[] userinput = inputMehtod.split(",");
+
+            System.out.println("Invoking " + methods[Integer.parseInt(userinput[0])-1].getName());
+            Object theClass = ref.getConstructor().newInstance();
+            Object[] objects = new Object[userinput.length-1];
+            for(int counter = 1; counter < userinput.length; counter++){
+               objects[counter-1] = Integer.parseInt(userinput[counter]);
             }
-            //Method userMethod = ref.getDeclaredMethod(Method(inputMehtod,);
-        } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            for (Object o : objects){
+                System.out.println(o);
+            }
+            System.out.println("Server Getting result...");
+            writer.println(methods[Integer.parseInt(userinput[0])-1].invoke(theClass,objects));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error on the server");
+            System.exit(-1);
         }
     }
 

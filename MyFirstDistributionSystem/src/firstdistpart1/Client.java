@@ -21,25 +21,34 @@ public class Client {
         PrintWriter writer = null;
         BufferedReader reader = null;
         Scanner scan = new Scanner(System.in);
+        int counter = 1;
 
         try{
             server = new Socket("LocalHost",10080);
             writer = new PrintWriter(server.getOutputStream(), true);
             reader = new BufferedReader(new InputStreamReader(server.getInputStream()));
+            System.out.println("Methods: (0...name: parameter...)");
             Thread.sleep(1000);
+            System.out.println(counter + "..." + reader.readLine());
+            counter +=1;
             while (reader.ready()){
-                System.out.println(reader.readLine());
+
+                System.out.println(counter + "..." + reader.readLine());
+                ++counter;
             }
-            System.out.println("What method do you want?(Type the method name as it appears above)");
+            System.out.println("What method do you want?(Type the method name as it appears above with a comma between each parameter)");
+            System.out.println("Example to call the add method: 1, 1, 1");
             String input = scan.nextLine();
             writer.println(input);
-            //System.out.println(reader.readLine());
+            System.out.println("Getting Result...");
+            System.out.println("The result is: " + reader.readLine());
 
 
             server.close();
         }
         catch (Exception e){
-            e.printStackTrace();
+            System.out.println("Server Error");
+            System.exit(-1);
         }
     }
 }
