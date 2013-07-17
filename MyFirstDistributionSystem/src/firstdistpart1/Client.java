@@ -27,8 +27,20 @@ public class Client {
             server = new Socket("LocalHost",10080);
             writer = new PrintWriter(server.getOutputStream(), true);
             reader = new BufferedReader(new InputStreamReader(server.getInputStream()));
-            System.out.println("Methods: (0...name: parameter...)");
+            //System.out.println("Methods: (0...name: parameter...)");
+            System.out.println("The Classes:");
             Thread.sleep(1000);
+            System.out.println(counter + "..." + reader.readLine());
+            counter +=1;
+            while (reader.ready()){
+
+                System.out.println(counter + "..." + reader.readLine());
+                ++counter;
+            }
+            System.out.println("Enter in the number of the class to use");
+            writer.println(scan.nextLine());
+            Thread.sleep(1000);
+            counter = 1;
             System.out.println(counter + "..." + reader.readLine());
             counter +=1;
             while (reader.ready()){
@@ -52,12 +64,3 @@ public class Client {
         }
     }
 }
-//System.out.println("Enter in '1' for add and '2' for sub:");
-//String userInput = scan.next() + ",";
-//System.out.println("Enter in the first number:");
-//userInput += scan.next() + ",";
-//System.out.println("Enter in the second number:");
-//userInput += scan.next();
-//writer.println(userInput);
-//System.out.println("The answer is:");
-//System.out.println(reader.readLine());

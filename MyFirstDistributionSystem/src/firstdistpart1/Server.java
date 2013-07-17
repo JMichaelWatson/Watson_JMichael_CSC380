@@ -17,8 +17,6 @@ public class Server{
     public static void main(String[] args) {
         ServerSocket serverSock = null;
         Socket clientSocket = null;
-        //BufferedReader reader = null;
-        //PrintWriter writer = null;
 
         MathLogic mathLogic = new MathLogic();
         try{
@@ -37,16 +35,3 @@ public class Server{
         }
     }
 }
-//            writer = new PrintWriter(clientSocket.getOutputStream(), true);
-//            System.out.println("Creating Server Writer");
-//            reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-//            System.out.println("Creating Server Reader");
-//            String userInput = reader.readLine();
-//            System.out.println("User input read");
-//            String[] splitString = userInput.split(",");
-//            if(splitString[0].equalsIgnoreCase("1")){
-//               writer.println(mathLogic.add(Integer.parseInt(splitString[1]), Integer.parseInt(splitString[2])));
-//            }
-//            else{
-//                System.out.println(mathLogic.sub(Integer.parseInt(splitString[1]), Integer.parseInt(splitString[2])));
-//            }

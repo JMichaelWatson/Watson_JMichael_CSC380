@@ -7,6 +7,13 @@ import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.Socket;
+import java.net.URL;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,37 +28,27 @@ public class ClientThread extends Thread {
     private  BufferedReader reader = null;
     private PrintWriter writer = null;
 
+
     public ClientThread(Socket client){
         this.clientSocket = client;
     }
 
-    public void Oldrun(){
-        try{
-            writer = new PrintWriter(clientSocket.getOutputStream(), true);
-            reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            String userInput = reader.readLine();
-            String[] splitString = userInput.split(",");
-            if(splitString[0].equalsIgnoreCase("1")){
-                System.out.println("Client is adding" + splitString[1] + " and " + splitString[2]);
-                writer.println(mathLogic.add(Integer.parseInt(splitString[1]), Integer.parseInt(splitString[2])));
-            }
-            else{
-                System.out.println("Client is subbing" + splitString[1] + " and " + splitString[2]);
-                writer.println(mathLogic.sub(Integer.parseInt(splitString[1]), Integer.parseInt(splitString[2])));
-            }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
     private Class<?> ref = null;
 
     public void run(){
         try {
-            System.out.println("Getting methods....");
             writer = new PrintWriter(clientSocket.getOutputStream(), true);
             reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            ref = Class.forName("firstdistpart1.MathLogic");
+            System.out.println("Getting Classes...");
+            List<Class<?>> allClasses = getClassesInPackage("firstdistpart1");
+            for(Class<?> aClass : allClasses){
+                System.out.println(aClass.getName());
+                writer.println(aClass.getName());
+            }
+            String className = allClasses.get(Integer.parseInt(reader.readLine())-1).getName();
+            System.out.println("The user selected class:   " + className);
+            System.out.println("Getting methods....");
+            ref = Class.forName(className);
             for(Method s1 : ref.getDeclaredMethods()){
                 String method = s1.getName() + ": ";
                 for(Class<?> p1 : s1.getParameterTypes()){
@@ -84,5 +81,20 @@ public class ClientThread extends Thread {
             System.exit(-1);
         }
     }
-
+    private List getClassesInPackage(String packageName) throws Exception {
+        URL packageUrl = this.getClass().getClassLoader().getResource(packageName.replace(".", "/"));
+        List allClasses = new ArrayList<>();
+        if(packageUrl != null) {
+            Path packagePath = Paths.get(packageUrl.toURI());
+            if(Files.isDirectory(packagePath)) {
+                try(DirectoryStream<Path> ds = Files.newDirectoryStream(packagePath, "*.class")) {
+                    for(Path d : ds) {
+                        allClasses.add(Class.forName(packageName + "." + d.getFileName().toString().replace(".class", "")));
+                    }
+                }
+            }
+            return allClasses;
+        }
+        return null;
+    }
 }
