@@ -26,7 +26,6 @@ public class Client {
         try{
             server = new Socket("LocalHost",10080);
             fromServer = new ObjectInputStream(server.getInputStream()) ;
-            toServer = new ObjectOutputStream(server.getOutputStream());
            //writer = new PrintWriter(server.getOutputStream(), true);
             //reader = new BufferedReader(new InputStreamReader(server.getInputStream()));
             System.out.println("The Classes:");
@@ -42,6 +41,7 @@ public class Client {
 //                ++counter;
 //            }
             System.out.println("Enter in the number of the class to use");
+	          toServer = new ObjectOutputStream(server.getOutputStream());
             toServer.writeObject(scan.nextLine());
 
             counter = 1;

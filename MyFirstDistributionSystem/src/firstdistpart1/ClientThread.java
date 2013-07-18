@@ -35,18 +35,19 @@ public class ClientThread extends Thread {
     public void run(){
         try {
             ObjectOutputStream toClientObject = new ObjectOutputStream(clientSocket.getOutputStream());
-            ObjectInputStream fromClient = new ObjectInputStream(clientSocket.getInputStream());
             //writer = new PrintWriter(clientSocket.getOutputStream(), true);
             //reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             System.out.println("Getting Classes...");
             List<Class<?>> allClasses = getClassesInPackage("firstdistpart1");
             toClientObject.writeObject(allClasses);
+	        toClientObject.flush();
 //            for(Class<?> aClass : allClasses){
 //                System.out.println(aClass.getName());
 //                writer.println(aClass.getName());
 //            }
             System.out.println("Testing point");
-            int classIndex = (int) fromClient.readObject();
+	        ObjectInputStream fromClient = new ObjectInputStream(clientSocket.getInputStream());
+	        int classIndex = (int) fromClient.readObject();
             System.out.println("Testing point 2");
             String className = allClasses.get(classIndex-1).getName();
             System.out.println("The user selected class:   " + className);
