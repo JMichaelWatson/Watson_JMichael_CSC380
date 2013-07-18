@@ -1,9 +1,6 @@
 package firstdistpart1;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.Socket;
@@ -25,8 +22,8 @@ import java.util.List;
 public class ClientThread extends Thread {
     private MathLogic mathLogic = new MathLogic();
     private Socket clientSocket = null;
-    private  BufferedReader reader = null;
-    private PrintWriter writer = null;
+    //private  BufferedReader reader = null;
+    //private PrintWriter writer = null;
 
 
     public ClientThread(Socket client){
@@ -37,27 +34,34 @@ public class ClientThread extends Thread {
 
     public void run(){
         try {
-            writer = new PrintWriter(clientSocket.getOutputStream(), true);
-            reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            ObjectOutputStream toClientObject = new ObjectOutputStream(clientSocket.getOutputStream());
+            ObjectInputStream fromClient = new ObjectInputStream(clientSocket.getInputStream());
+            //writer = new PrintWriter(clientSocket.getOutputStream(), true);
+            //reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             System.out.println("Getting Classes...");
             List<Class<?>> allClasses = getClassesInPackage("firstdistpart1");
-            for(Class<?> aClass : allClasses){
-                System.out.println(aClass.getName());
-                writer.println(aClass.getName());
-            }
-            String className = allClasses.get(Integer.parseInt(reader.readLine())-1).getName();
+            toClientObject.writeObject(allClasses);
+//            for(Class<?> aClass : allClasses){
+//                System.out.println(aClass.getName());
+//                writer.println(aClass.getName());
+//            }
+            System.out.println("Testing point");
+            int classIndex = (int) fromClient.readObject();
+            System.out.println("Testing point 2");
+            String className = allClasses.get(classIndex-1).getName();
             System.out.println("The user selected class:   " + className);
             System.out.println("Getting methods....");
             ref = Class.forName(className);
-            for(Method s1 : ref.getDeclaredMethods()){
-                String method = s1.getName() + ": ";
-                for(Class<?> p1 : s1.getParameterTypes()){
-                   method += p1 + " ";
-                }
-                System.out.println(method);
-                writer.println(method);
-            }
-                String inputMehtod = reader.readLine();
+            toClientObject.writeObject(ref);
+//            for(Method s1 : ref.getDeclaredMethods()){
+//                String method = s1.getName() + ": ";
+//                for(Class<?> p1 : s1.getParameterTypes()){
+//                   method += p1 + " ";
+//                }
+//                System.out.println(method);
+//                writer.println(method);
+//            }
+                String inputMehtod = (String)fromClient.readObject();
                 System.out.println(inputMehtod);
             Method[] methods = ref.getDeclaredMethods();
 
@@ -73,7 +77,7 @@ public class ClientThread extends Thread {
                 System.out.println(o);
             }
             System.out.println("Server Getting result...");
-            writer.println(methods[Integer.parseInt(userinput[0])-1].invoke(theClass,objects));
+            toClientObject.writeObject(methods[Integer.parseInt(userinput[0])-1].invoke(theClass,objects));
         }
         catch (Exception e) {
             e.printStackTrace();

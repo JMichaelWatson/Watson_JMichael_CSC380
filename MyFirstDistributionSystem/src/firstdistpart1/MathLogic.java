@@ -1,5 +1,7 @@
 package firstdistpart1;
 
+import java.io.Serializable;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Michael
@@ -7,7 +9,7 @@ package firstdistpart1;
  * Time: 5:58 PM
  * To change this template use File | Settings | File Templates.
  */
-public class MathLogic {
+public class MathLogic implements Serializable {
 
     public int add(int x, int y){
         return x + y;
