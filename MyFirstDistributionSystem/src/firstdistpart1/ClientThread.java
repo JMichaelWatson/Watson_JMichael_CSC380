@@ -41,29 +41,19 @@ public class ClientThread extends Thread {
             List<Class<?>> allClasses = getClassesInPackage("firstdistpart1");
             toClientObject.writeObject(allClasses);
 	        toClientObject.flush();
-//            for(Class<?> aClass : allClasses){
-//                System.out.println(aClass.getName());
-//                writer.println(aClass.getName());
-//            }
+
             System.out.println("Testing point");
 	        ObjectInputStream fromClient = new ObjectInputStream(clientSocket.getInputStream());
-	        int classIndex = (int) fromClient.readObject();
+	        int classIndex = Integer.parseInt((String) fromClient.readObject());
             System.out.println("Testing point 2");
             String className = allClasses.get(classIndex-1).getName();
             System.out.println("The user selected class:   " + className);
             System.out.println("Getting methods....");
             ref = Class.forName(className);
             toClientObject.writeObject(ref);
-//            for(Method s1 : ref.getDeclaredMethods()){
-//                String method = s1.getName() + ": ";
-//                for(Class<?> p1 : s1.getParameterTypes()){
-//                   method += p1 + " ";
-//                }
-//                System.out.println(method);
-//                writer.println(method);
-//            }
-                String inputMehtod = (String)fromClient.readObject();
-                System.out.println(inputMehtod);
+            toClientObject.flush();
+            String inputMehtod = (String)fromClient.readObject();
+            System.out.println(inputMehtod);
             Method[] methods = ref.getDeclaredMethods();
 
             String[] userinput = inputMehtod.split(",");

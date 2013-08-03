@@ -3,6 +3,7 @@ package firstdistpart1;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.net.Socket;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -26,24 +27,22 @@ public class Client {
         try{
             server = new Socket("LocalHost",10080);
             fromServer = new ObjectInputStream(server.getInputStream()) ;
-           //writer = new PrintWriter(server.getOutputStream(), true);
-            //reader = new BufferedReader(new InputStreamReader(server.getInputStream()));
+
+            //Input from server
             System.out.println("The Classes:");
-            Class<?>[] classes =  (Class<?>[])fromServer.readObject();
+            List<Class<?>> classes =  (List<Class<?>>)fromServer.readObject();
             for(Class<?> c : classes){
                 System.out.println(counter + "..." + c.getName());
+                counter++;
             }
-//            System.out.println(counter + "..." + reader.readLine());
-//            counter +=1;
-//            while (reader.ready()){
-//
-//                System.out.println(counter + "..." + reader.readLine());
-//                ++counter;
-//            }
-            System.out.println("Enter in the number of the class to use");
-	          toServer = new ObjectOutputStream(server.getOutputStream());
-            toServer.writeObject(scan.nextLine());
 
+            //Input to server
+            System.out.println("Enter in the number of the class to use");
+	        toServer = new ObjectOutputStream(server.getOutputStream());
+            toServer.writeObject(scan.nextLine());
+            toServer.flush();
+
+            //Input from server
             counter = 1;
             Class<?> calledClass = (Class<?>)fromServer.readObject();
             System.out.println(calledClass.getName() + " Methods: (0...name: parameter(s)...)");
@@ -56,25 +55,19 @@ public class Client {
                 System.out.println(counter + "..." + methodInfo);
                 counter++;
             }
-//            Thread.sleep(1000);
-//            counter = 1;
-//            System.out.println(counter + "..." + reader.readLine());
-//            counter +=1;
-//            while (reader.ready()){
-//
-//                System.out.println(counter + "..." + reader.readLine());
-//                ++counter;
-//            }
 
+            //Input to server
             System.out.println("What method do you want?(Type the method name as it appears above with a comma between each parameter)");
             System.out.println("Example to call the add method: 1, 1, 1");
             String input = scan.nextLine();
             toServer.writeObject(input);
+            //Look at identifying between objects and primitives. Try to change the way of sending data to the server from a string.
+
+            //Input from server
             System.out.println("Getting Result...");
             System.out.println("The result is: " + fromServer.readObject());
-
-
             server.close();
+            System.out.println("Connection Ended");
         }
         catch (Exception e){
             System.out.println("Server Error");
