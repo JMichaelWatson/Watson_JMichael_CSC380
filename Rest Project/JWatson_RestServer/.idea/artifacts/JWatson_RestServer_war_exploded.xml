@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="JWatson_RestServer:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/JWatson_RestServer_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="JWatson_RestServer/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="JWatson_RestServer" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

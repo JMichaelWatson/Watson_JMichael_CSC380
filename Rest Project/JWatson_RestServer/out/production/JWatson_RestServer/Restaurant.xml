@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<Restaurants>
+    <Restaurant name="Joe's Place">
+        <Menu>
+            <Item name="Pizza" price="100.00" description="Yummy pizza"/>
+            <Item name="Card Board" price="1.00" description="So poor have to eat card board"/>
+        </Menu>
+    </Restaurant>
+    <Restaurant name="Ricky Rich">
+        <Menu>
+            <Item name="Caviar" price="10000.00" description="Yumming Fish eggs"/>
+            <Item name="Pie" price="1000000.00" description="Made out of pure gold and diamonds"/>
+        </Menu>
+    </Restaurant>
+    <Restaurant name="Got Crabs">
+        <Menu>
+            <Item name="Crabs" price="1.00" description="I pinch"/>
+            <Item name="Ugly Crabs" price="0.01" description="What is a ugly crab"/>
+        </Menu>
+    </Restaurant>
+</Restaurants>
