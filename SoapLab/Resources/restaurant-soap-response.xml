@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<soap:Envelope
+        xmlns:soap="http://www.w3.org/2001/12/soap-envelope"
+        soap:encodingStyle="http://www.w3.org/2001/12/soap-encoding">
+    <soap:Body  xmlns:r="http://local8080/soap/jwatson/lunch/restaurant">
+        <r:restaurantsResponse>
+            <r:restaurant>
+                <r:id>1</r:id>
+                <r:name>Joe's Place</r:name>
+                <r:id>2</r:id>
+                <r:name>Crab Shack</r:name>
+            </r:restaurant>
+        </r:restaurantsResponse>
+    </soap:Body>
+</soap:Envelope>
